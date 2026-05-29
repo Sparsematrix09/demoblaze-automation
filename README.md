@@ -1,89 +1,118 @@
-# opencart
-Selenium Hybrid Framework:
+# 🚀 Premium E-Commerce Test Automation Framework
 
-The project is based on Java-Selenium technology to automate https://demo.opencart.com/index.php website. 
+[![Java](https://img.shields.io/badge/Language-Java_11%2B-orange.svg?style=for-the-badge&logo=java)](https://www.oracle.com/java/)
+[![Selenium](https://img.shields.io/badge/Tool-Selenium_4-green.svg?style=for-the-badge&logo=selenium)](https://www.selenium.dev/)
+[![TestNG](https://img.shields.io/badge/Runner-TestNG-blue.svg?style=for-the-badge)](https://testng.org/)
+[![ExtentReports](https://img.shields.io/badge/Reporting-Extent_Reports_5-purple.svg?style=for-the-badge)](https://www.extentreports.com/)
+[![Maven](https://img.shields.io/badge/Build-Maven-red.svg?style=for-the-badge&logo=apache-maven)](https://maven.apache.org/)
 
-Functionality covered in this automation Project : (Java, Selenium, TestNG, Maven, Page Object Model & Page Factory):
+A professional, interview-ready, high-performance hybrid test automation framework designed using the **Page Object Model (POM)** and **Page Factory** design patterns. This repository features robust session handling, modular logic, automatic screenshot captures on failure, and premium custom reporting.
 
-- Registration of new user
+---
 
-- login existing user
+## 🌟 Key Features
 
-- browsing differnt menues
+*   **Curated Core Scenarios:** Focuses on the most high-impact e-commerce workflows (8 key end-to-end tests).
+*   **Automatic Failure Screenshots:** Integrated with custom TestNG listener `ScreenshotListener` to capture browser viewports automatically upon test failure.
+*   **Unified Reporting Hub:** Uses `Extent Reports 5` (Dark Theme) to gather detailed operational steps, logs, categories, and embedded screenshots of failures.
+*   **Cross-Browser Capability:** Seamlessly configure and execute tests concurrently on Chrome, Edge, and Firefox.
+*   **Log4j2 Logger:** Comprehensive step-by-step console and file logging mapped per lifecycle.
 
-- Searching Products
+---
 
-- Entering address details
+## 🛠️ Tech Stack & Architecture
 
-- adding products into cart (cart validation)
+```mermaid
+graph TD
+    A[TestNG Runner / XML] --> B[ScreenshotListener & ExtentReportManager]
+    A --> C[Test Cases /tests/]
+    C --> D[BaseClass /base/]
+    C --> E[Page Objects /pages/]
+    E --> F[Web Driver]
+    D --> G[config.properties / log4j2.xml]
+    C --> H[XLUtility /utils/]
+```
 
-- Checkout
+*   **Core Logic:** Java 11+, Selenium WebDriver (v4.0.0-beta-2)
+*   **Test Runner:** TestNG
+*   **Design Pattern:** Page Object Model with Page Factory Elements initialization
+*   **Build Automation:** Maven
+*   **Utilities:** Apache POI (Excel Data-Driven capability), Commons IO, WebDriverManager
 
-Added dependencies in pom.xml:
+---
 
-- selenium-java
+## 📂 Professional Directory Layout
 
-- testng
+```
+src/test/java/
+├── base/
+│   └── BaseClass.java          # Global browser launch, teardown, config setups, and screen capture utils.
+├── pages/
+│   ├── HomePage.java           # Top navigation, account actions
+│   ├── LoginPage.java          # Authentication and Forgot Password actions
+│   ├── RegistrationPage.java   # Account sign-up fields
+│   ├── SearchPage.java         # Global product search results
+│   ├── ProductPage.java        # Product details, reviews, and wishlist interactions
+│   ├── CartPage.java           # Shopping cart list, coupon operations
+│   ├── CheckoutPage.java       # Checkout summary and verification
+│   └── AccountPage.java        # Order histories, site-maps, and logouts
+├── tests/
+│   ├── RegistrationTest.java   # Customer sign-up workflows
+│   ├── LoginTest.java          # Mandatory credentials check
+│   ├── SearchTest.java         # Searching catalog items
+│   ├── AddToCartTest.java      # Cart addition verification
+│   ├── CheckoutTest.java       # End-to-end purchasing workflow
+│   ├── WishlistTest.java       # Adding items to favorites
+│   ├── ForgotPasswordTest.java # Validation of account recovery links
+│   └── LogoutTest.java         # Session cleanup and termination
+├── utils/
+│   └── XLUtility.java          # Excel read/write data helpers
+└── listeners/
+    ├── ExtentReportManager.java# Beautiful real-time interactive reports
+    └── ScreenshotListener.java # Custom automated failure capture listener
+```
 
-- apache poi
+---
 
-- apache poi-ooxml
+## 🚀 Getting Started
 
-- log4j-core
+### 📋 Prerequisites
 
-- log4j-api
+1.  **Java Development Kit (JDK 11 or higher)**
+2.  **Apache Maven**
+3.  **Google Chrome, Microsoft Edge, or Mozilla Firefox**
 
-- extentreports
+### 💻 Running Tests
 
-- commons-io
+To run all 8 core test cases concurrently using the default browser suite (Chrome):
 
-- commons-lang3
+```bash
+mvn clean test -DsuiteXmlFile=alltests.xml
+```
 
-- commons-email
+To run individual tests or custom login suites:
 
-- webdrivermanager
+```bash
+mvn test -DsuiteXmlFile=mytestng.xml
+```
 
-What is a Framework?
+---
 
-In general, a framework is a real or conceptual structure intended to serve as a support or guide for the building of something that expands the structure into something useful.
+## 📸 Automated Test Reports & Failure Handling
 
-Prior to knowing about the Hybrid Test Automation Framework, we should know about the existing frameworks:
+### Real-Time Extent Reports
+All reports are generated inside the `reports/` folder. With a single double-click on the `.html` file, you can view the fully responsive dark-themed execution logs, execution timestamps, skipped tests, and categories.
 
-- Data Driven Framework
-- Test Script Modularity Framework
-- Keyword Driven Framework
-- Test Library Architecture Framework
-- Hybrid Framework
+### Screenshot-on-Failure
+Whenever a test fails, `ScreenshotListener` automatically invokes the Selenium screenshot method. It saves the screenshot file locally to `screenshots/{testMethodName}.png` and embeds it directly into the Extent Report:
 
-Why do we need Automation framework:
+```java
+// Example failure handling in listener
+public void onTestFailure(ITestResult result) {
+    WebDriver driver = ((BaseClass) result.getInstance()).driver;
+    captureScreen(driver, result.getName());
+}
+```
 
-Using Framework, we can solve many issues like writing code once and reusing it. Significant Reduction in Testing Cycle Time
-Running the script with different set of data. Executing the scripts end-to-end without any manual intervention. ( If any error occurs from tool or application, Script run will stop. If we use framework, it will skip or fail that testcase and run with the next testcase.)
-
-Folder Structure:
-=================
-- Project Name
-
-- src/test/java
-
-- pageObjects (Package)
-
-- testBase (Package)
-
-- testCases (Package)
-
-- utilities (Package)
-
-- src/test/resources -- (log4j.xml & properties files)
-
-- testData (Folder)
-
-- logs (Folder)
-
-- screenshots (Folder)
-
-- reports (Folder)
-
-- testNG.xml
-
-- pom.xml
+---
+*Developed as a premium showcase of Software Development Engineer in Test (SDET) best practices.*
